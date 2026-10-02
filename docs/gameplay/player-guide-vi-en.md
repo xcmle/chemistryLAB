@@ -123,4 +123,4 @@ The engine evaluates temperature, concentration, pH, catalyst, redox branch, lim
 
 **EN:** `Alt` releases or locks the cursor for HUD buttons. In the touch interface, the left pad moves and the right pad turns the view; action buttons use the same physical interaction as the keyboard. Always stage samples before loading. Pause menus own input. Use `-touchControls` to preview touch controls on desktop.
 
-Điều khiển cảm ứng nằm trong cùng dự án Unity; chưa xác minh trên thiết bị mobile thật. / Touch controls live in the same Unity project; physical mobile-device behavior remains unverified.
+Điều khiển cảm ứng nằm trong cùng dự án Unity; chưa xác minh trên thiết bị mobile thật. Có thể tạo APK phát triển bằng `Chemistry Lab -> Android -> Build Development APK`; cần Unity 6000.5.3f1 cùng Android Build Support, SDK/NDK và OpenJDK. / Touch controls live in the same Unity project; physical mobile-device behavior remains unverified. A development APK can be created with `Chemistry Lab -> Android -> Build Development APK`; Unity 6000.5.3f1 with Android Build Support, SDK/NDK and OpenJDK is required.

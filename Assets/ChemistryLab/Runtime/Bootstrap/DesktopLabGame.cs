@@ -1025,6 +1025,18 @@ namespace ChemistryLab.Desktop
 
         public void ToggleFullscreen()
         {
+            if (Application.isMobilePlatform)
+            {
+                if (hud != null)
+                {
+                    hud.ShowTransient(LabLocalization.Text(
+                        "Android quản lý chế độ toàn màn hình tự động.",
+                        "Android manages fullscreen automatically."));
+                    hud.SetFullscreenState(true);
+                }
+                return;
+            }
+
             var fullscreen = Screen.fullScreenMode == FullScreenMode.Windowed;
             ApplyDisplayMode(fullscreen);
             PlayerPrefs.SetInt(FullscreenPreferenceKey, fullscreen ? 1 : 0);
@@ -1035,6 +1047,33 @@ namespace ChemistryLab.Desktop
         private static void ConfigureDesktopPresentation()
         {
             QualitySettings.vSyncCount = 1;
+            QualitySettings.softParticles = false;
+            QualitySettings.shadowCascades = 2;
+
+            if (Application.isMobilePlatform)
+            {
+                // The touch UI already shares the desktop action dispatchers. Keep the
+                // mobile runtime bounded to a predictable landscape/60 FPS profile so
+                // mid-range devices do not inherit the Windows desktop quality budget.
+                Screen.autorotateToPortrait = false;
+                Screen.autorotateToPortraitUpsideDown = false;
+                Screen.autorotateToLandscapeLeft = true;
+                Screen.autorotateToLandscapeRight = true;
+                Screen.orientation = ScreenOrientation.AutoRotation;
+                Screen.sleepTimeout = SleepTimeout.NeverSleep;
+                Application.targetFrameRate = 60;
+                QualitySettings.pixelLightCount = 2;
+                QualitySettings.antiAliasing = 2;
+                QualitySettings.anisotropicFiltering = AnisotropicFiltering.Enable;
+                QualitySettings.shadows = ShadowQuality.All;
+                QualitySettings.shadowResolution = ShadowResolution.Medium;
+                QualitySettings.shadowProjection = ShadowProjection.StableFit;
+                QualitySettings.shadowDistance = 22f;
+                QualitySettings.realtimeReflectionProbes = false;
+                ScalableBufferManager.ResizeBuffers(1f, 1f);
+                return;
+            }
+
             Application.targetFrameRate = -1;
             QualitySettings.pixelLightCount = 3;
             QualitySettings.antiAliasing = 4;
@@ -1043,8 +1082,6 @@ namespace ChemistryLab.Desktop
             QualitySettings.shadowResolution = ShadowResolution.High;
             QualitySettings.shadowProjection = ShadowProjection.StableFit;
             QualitySettings.shadowDistance = 28f;
-            QualitySettings.shadowCascades = 2;
-            QualitySettings.softParticles = false;
             QualitySettings.realtimeReflectionProbes = true;
             ScalableBufferManager.ResizeBuffers(1f, 1f);
 

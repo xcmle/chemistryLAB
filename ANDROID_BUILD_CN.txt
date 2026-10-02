@@ -1,0 +1,40 @@
+Chemistry Lab 3D · Android 开发版构建说明
+=========================================
+
+目标输出：
+Builds/Android/ChemistryLab3D-Android-dev.apk
+
+需要：
+1. Unity Hub
+2. Unity Editor 6000.5.3f1
+3. 给该 Editor 安装：
+   - Android Build Support
+   - Android SDK & NDK Tools
+   - OpenJDK
+
+构建：
+1. 用 Unity Hub -> Add/Open project 打开本文件所在项目根目录。
+2. 等 Unity 首次导入和编译结束，确认 Console 没有红色编译错误。
+3. 菜单栏点击：Chemistry Lab -> Android -> Build Development APK
+4. 构建完成后，到项目目录：
+   Builds/Android/ChemistryLab3D-Android-dev.apk
+5. 将 APK 复制到安卓手机安装测试。
+
+当前 Android 配置：
+- ARM64
+- IL2CPP
+- 最低 Android API 26（Android 8.0）
+- Target API：使用本机已安装的最新 SDK
+- 横屏自动旋转（仅左右横屏）
+- 60 FPS 目标
+- Android 自动启用现有触控 UI
+- 左侧虚拟摇杆移动
+- 右侧滑动转视角
+- 右侧/底部触控按钮调用与桌面键盘相同的交互
+- 刘海/挖孔安全区适配
+- Development APK，使用 Unity/Android 调试签名，不需要你准备正式 keystore
+
+说明：
+- 这份工程已经完成源码级 Android 适配和构建入口。
+- APK 需要由安装了 Unity Android 模块的 Unity Editor 或 Unity Build Automation 实际编译。
+- 第一次真机构建若出现 Gradle/SDK/Shader/触控布局问题，可根据构建日志继续修正。

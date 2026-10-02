@@ -250,6 +250,30 @@ existing distribution without rebuilding it. See
 [`docs/release/windows-portable-layout.md`](docs/release/windows-portable-layout.md)
 for the packaging contract and release checks.
 
+## Android Development APK
+
+The canonical Unity project also contains the shared touch-control layer used
+by Android: a pointer-owned movement pad, a separate look zone, touch action
+buttons, and safe-area handling. Physical-device behavior still requires
+real-device verification.
+
+Install Unity `6000.5.3f1` with **Android Build Support**, **Android SDK & NDK
+Tools**, and **OpenJDK**. Then open the repository root and run:
+
+`Chemistry Lab -> Android -> Build Development APK`
+
+The editor script switches to Android, keeps the game landscape-only, selects
+IL2CPP + ARM64, uses API 26 as the minimum Android version, and builds a
+development APK with Unity's debug signing configuration:
+
+```text
+Builds/Android/ChemistryLab3D-Android-dev.apk
+```
+
+The APK build does not require a release keystore. For store distribution, use
+a separate release signing configuration and validate the project on physical
+devices first.
+
 ## Validation
 
 The latest committed validation report records:

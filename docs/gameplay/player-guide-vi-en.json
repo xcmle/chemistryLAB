@@ -193,7 +193,21 @@
       "collect",
       "inventory"
     ],
-    "deviceValidation": "Not yet verified on a physical mobile device"
+    "deviceValidation": "Not yet verified on a physical mobile device",
+    "androidDevelopmentBuild": {
+      "menu": "Chemistry Lab/Android/Build Development APK",
+      "output": "Builds/Android/ChemistryLab3D-Android-dev.apk",
+      "unity": "6000.5.3f1",
+      "requirements": [
+        "Android Build Support",
+        "Android SDK & NDK Tools",
+        "OpenJDK"
+      ],
+      "architecture": "ARM64",
+      "scriptingBackend": "IL2CPP",
+      "minimumApi": 26,
+      "signing": "Unity development/debug signing"
+    }
   },
   "accountingLimits": {
     "vi": "Chênh lệch khối lượng ghi nhận không phải cân bằng khối lượng đầy đủ; chưa mô hình hóa riêng dung môi và từng sản phẩm phụ.",
