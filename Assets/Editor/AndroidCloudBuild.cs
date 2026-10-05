@@ -19,8 +19,8 @@ namespace ChemistryLab.BuildAutomation
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
             PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
-            PlayerSettings.bundleVersion = "0.3.0";
-            PlayerSettings.Android.bundleVersionCode = 3;
+            PlayerSettings.bundleVersion = "0.3.1";
+            PlayerSettings.Android.bundleVersionCode = 4;
 
             PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
             PlayerSettings.allowedAutorotateToPortrait = false;
@@ -32,7 +32,7 @@ namespace ChemistryLab.BuildAutomation
             EditorUserBuildSettings.buildAppBundle = false;
 
             Debug.Log(
-                "ANDROID_CLOUD_PREEXPORT_PASS backend=IL2CPP arch=ARM64 minApi=26 version=0.3.0 output=APK");
+                "ANDROID_CLOUD_PREEXPORT_PASS backend=IL2CPP arch=ARM64 minApi=26 version=0.3.1 output=APK");
         }
     }
 }

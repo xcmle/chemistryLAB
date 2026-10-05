@@ -799,6 +799,18 @@ namespace ChemistryLab.Desktop
         public void SetInspectorVisible(bool visible, bool immediate = false)
         {
             inspectorVisible = visible;
+
+            if (touchControlsEnabled && touchInspectButton != null)
+            {
+                var label = touchInspectButton.GetComponentInChildren<Text>(true);
+                if (label != null)
+                {
+                    label.text = visible
+                        ? LabLocalization.Text("ĐÓNG", "CLOSE")
+                        : LabLocalization.Text("PHÂN TÍCH", "INSPECT");
+                }
+            }
+
             if (inspectorGroup == null || inspectorRect == null)
             {
                 return;
@@ -980,7 +992,10 @@ namespace ChemistryLab.Desktop
             SetButtonLabel("Reaction Skip Button", "BỎ QUA", "SKIP");
 
             SetButtonLabel("Touch Interact Button", "TƯƠNG TÁC", "INTERACT");
-            SetButtonLabel("Touch Inspect Button", "PHÂN TÍCH", "INSPECT");
+            SetButtonLabel(
+                "Touch Inspect Button",
+                inspectorVisible ? "ĐÓNG" : "PHÂN TÍCH",
+                inspectorVisible ? "CLOSE" : "INSPECT");
             SetButtonLabel("Touch Put Away Button", "CẤT MẪU", "PUT AWAY");
             SetButtonLabel("Touch Pause Button", "DỪNG", "PAUSE");
             SetButtonLabel("Touch Mission Button", "NHIỆM VỤ", "MISSION");
@@ -1817,6 +1832,13 @@ namespace ChemistryLab.Desktop
                 new Vector2(-16f, -16f),
                 LabTheme.WithAlpha(LabTheme.UiCard, 0.96f));
             inspectorRect = inspectorPanel.GetComponent<RectTransform>();
+            if (touchControlsEnabled)
+            {
+                // Leave the right-side touch action gutter completely unobstructed.
+                // Also lift the panel above the mobile laboratory utility strip.
+                inspectorRect.offsetMin = new Vector2(-650f, 100f);
+                inspectorRect.offsetMax = new Vector2(-236f, -16f);
+            }
             inspectorGroup = inspectorPanel.AddComponent<CanvasGroup>();
             AddOutline(inspectorPanel, LabTheme.WithAlpha(Color.white, 0.10f), new Vector2(1f, -1f));
 
@@ -1856,9 +1878,11 @@ namespace ChemistryLab.Desktop
             inspectorCloseButton = CreateButton(
                 "Inspector Close Button",
                 rule.transform,
-                "ĐÓNG · F",
-                new Vector2(296f, 14f),
-                new Vector2(398f, 58f),
+                touchControlsEnabled
+                    ? LabLocalization.Text("ĐÓNG", "CLOSE")
+                    : "ĐÓNG · F",
+                touchControlsEnabled ? new Vector2(282f, 10f) : new Vector2(296f, 14f),
+                touchControlsEnabled ? new Vector2(406f, 62f) : new Vector2(398f, 58f),
                 () => { if (game != null && game.Player != null) game.Player.DispatchInspect(); });
 
             selectedSection = new GameObject("Chemical Section", typeof(RectTransform));
