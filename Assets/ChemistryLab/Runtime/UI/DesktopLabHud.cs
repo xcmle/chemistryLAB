@@ -332,19 +332,33 @@ namespace ChemistryLab.Desktop
             var incident = state.LastIncident;
             var warning = state.Health < 50f
                 || incident != null && !incident.Controlled && incident.Severity >= HazardSeverity.Dangerous;
-            playerSafetyText.text = LabLocalization.IsEnglish
-                ? "HEALTH  " + state.Health.ToString("0.0") + " / 100"
-                  + "     CREDITS  " + state.Credits + "\n"
-                  + "RESPIRATOR  " + (state.RespiratorEquipped ? "WORN" : state.RespiratorOwned ? "REMOVED" : "NOT OWNED")
-                  + "     GAS TRAP  " + (state.GasTrapConnected ? "CONNECTED" : "DISCONNECTED") + "\n"
-                  + "HOOD FAN  " + (state.FumeHoodFanOn ? "ON" : "OFF") + "\n"
-                  + (incident == null ? "No incident recorded." : "Safety incident · review the warning and controls.")
-                : "SỨC KHỎE  " + state.Health.ToString("0.0") + " / 100"
-                  + "     TÍN DỤNG  " + state.Credits + "\n"
-                  + "MẶT NẠ  " + (state.RespiratorEquipped ? "ĐANG ĐEO" : state.RespiratorOwned ? "ĐÃ THÁO" : "CHƯA MUA")
-                  + "     BÌNH CÁCH LY  " + (state.GasTrapConnected ? "ĐÃ NỐI" : "CHƯA NỐI") + "\n"
-                  + "QUẠT TỦ HÚT  " + (state.FumeHoodFanOn ? "BẬT" : "TẮT") + "\n"
-                  + (incident == null ? "Chưa ghi nhận sự cố." : incident.Title + " · " + incident.Message);
+
+            if (LabLocalization.IsChinese)
+            {
+                playerSafetyText.text =
+                    "生命值  " + state.Health.ToString("0.0") + " / 100"
+                    + "     积分  " + state.Credits + "\n"
+                    + "防毒面罩  " + (state.RespiratorEquipped ? "已佩戴" : state.RespiratorOwned ? "已摘下" : "未购买")
+                    + "     气体捕集  " + (state.GasTrapConnected ? "已连接" : "未连接") + "\n"
+                    + "通风橱风机  " + (state.FumeHoodFanOn ? "开启" : "关闭") + "\n"
+                    + (incident == null ? "未记录安全事件。" : LabLocalization.TranslateVietnameseRuntime(incident.Title + " · " + incident.Message));
+            }
+            else
+            {
+                playerSafetyText.text = LabLocalization.IsEnglish
+                    ? "HEALTH  " + state.Health.ToString("0.0") + " / 100"
+                      + "     CREDITS  " + state.Credits + "\n"
+                      + "RESPIRATOR  " + (state.RespiratorEquipped ? "WORN" : state.RespiratorOwned ? "REMOVED" : "NOT OWNED")
+                      + "     GAS TRAP  " + (state.GasTrapConnected ? "CONNECTED" : "DISCONNECTED") + "\n"
+                      + "HOOD FAN  " + (state.FumeHoodFanOn ? "ON" : "OFF") + "\n"
+                      + (incident == null ? "No incident recorded." : "Safety incident · review the warning and controls.")
+                    : "SỨC KHỎE  " + state.Health.ToString("0.0") + " / 100"
+                      + "     TÍN DỤNG  " + state.Credits + "\n"
+                      + "MẶT NẠ  " + (state.RespiratorEquipped ? "ĐANG ĐEO" : state.RespiratorOwned ? "ĐÃ THÁO" : "CHƯA MUA")
+                      + "     BÌNH CÁCH LY  " + (state.GasTrapConnected ? "ĐÃ NỐI" : "CHƯA NỐI") + "\n"
+                      + "QUẠT TỦ HÚT  " + (state.FumeHoodFanOn ? "BẬT" : "TẮT") + "\n"
+                      + (incident == null ? "Chưa ghi nhận sự cố." : incident.Title + " · " + incident.Message);
+            }
             playerSafetyText.color = warning ? LabTheme.UiHazard : LabTheme.UiTextDim;
 
             if (respiratorButtonText != null)
@@ -486,9 +500,11 @@ namespace ChemistryLab.Desktop
             if (moveTouchZone != null) moveTouchZone.ResetPointer();
             if (lookTouchZone != null) lookTouchZone.ResetPointer();
 
-            reactionTitleText.text = LabLocalization.IsEnglish
-                ? "REACTION · " + DesktopLabGame.ZoneLabel(station)
-                : outcome.Title + " · " + DesktopLabGame.ZoneLabel(station);
+            reactionTitleText.text = LabLocalization.IsChinese
+                ? "反应 · " + DesktopLabGame.ZoneLabel(station)
+                : LabLocalization.IsEnglish
+                    ? "REACTION · " + DesktopLabGame.ZoneLabel(station)
+                    : outcome.Title + " · " + DesktopLabGame.ZoneLabel(station);
             reactionEquationText.text = string.IsNullOrWhiteSpace(outcome.Equation)
                 ? LabLocalization.Text("Chưa xác định phương trình", "Equation not identified")
                 : outcome.Equation;
@@ -549,21 +565,22 @@ namespace ChemistryLab.Desktop
 
             selectedFormulaText.color = LabTheme.UiFormula;
             selectedFormulaText.text = chemical.Formula;
-            selectedNameText.text = chemical.Name + " · " + chemical.PhaseLabel;
+            selectedNameText.text = LabLocalization.ChemicalName(chemical.Id, chemical.Name)
+                + " · " + LabLocalization.PhaseLabel(chemical.Phase, chemical.PhaseLabel);
             selectedDetailsText.text =
                 LabLocalization.Text("ĐỊNH LƯỢNG\n", "AMOUNT\n")
                 + amountGrams.ToString("0.#") + LabLocalization.Text(" g  ·  [ / ] để thay đổi\n\n", " g  ·  [ / ] to adjust\n\n")
-                + LabLocalization.Text("PHÂN LOẠI\n", "CLASS\n") + chemical.FamilyLabel + "\n\n"
+                + LabLocalization.Text("PHÂN LOẠI\n", "CLASS\n") + LabLocalization.FamilyLabel(chemical, chemical.FamilyLabel) + "\n\n"
                 + LabLocalization.Text("KHỐI LƯỢNG MOL\n", "MOLAR MASS\n") + chemical.MolarMass.ToString("0.000") + " g/mol\n\n"
-                + LabLocalization.Text("KHỐI LƯỢNG RIÊNG\n", "DENSITY\n") + chemical.Density + "\n\n"
-                + LabLocalization.Text("NÓNG CHẢY\n", "MELTING POINT\n") + chemical.MeltingPoint + "\n\n"
-                + LabLocalization.Text("SÔI / PHÂN HỦY\n", "BOILING / DECOMPOSITION\n") + chemical.BoilingPoint + "\n\n"
-                + LabLocalization.Text("NGOẠI QUAN\n", "APPEARANCE\n") + chemical.Appearance + "\n\n"
-                + LabLocalization.Text("ĐỘ TAN\n", "SOLUBILITY\n") + chemical.Solubility + "\n\n"
-                + LabLocalization.Text("TÍNH PHẢN ỨNG\n", "REACTIVITY\n") + chemical.ReactivitySummary + "\n\n"
-                + LabLocalization.Text("CẢNH BÁO\n", "HAZARDS\n") + chemical.Hazards + "\n\n"
-                + LabLocalization.Text("THAO TÁC\n", "HANDLING\n") + chemical.Handling + "\n\n"
-                + LabLocalization.Text("ỨNG DỤNG\n", "USE\n") + chemical.Use
+                + LabLocalization.Text("KHỐI LƯỢNG RIÊNG\n", "DENSITY\n") + LabLocalization.ChemicalData(chemical.Id, "density", chemical.Density) + "\n\n"
+                + LabLocalization.Text("NÓNG CHẢY\n", "MELTING POINT\n") + LabLocalization.ChemicalData(chemical.Id, "melting", chemical.MeltingPoint) + "\n\n"
+                + LabLocalization.Text("SÔI / PHÂN HỦY\n", "BOILING / DECOMPOSITION\n") + LabLocalization.ChemicalData(chemical.Id, "boiling", chemical.BoilingPoint) + "\n\n"
+                + LabLocalization.Text("NGOẠI QUAN\n", "APPEARANCE\n") + LabLocalization.ChemicalData(chemical.Id, "appearance", chemical.Appearance) + "\n\n"
+                + LabLocalization.Text("ĐỘ TAN\n", "SOLUBILITY\n") + LabLocalization.ChemicalData(chemical.Id, "solubility", chemical.Solubility) + "\n\n"
+                + LabLocalization.Text("TÍNH PHẢN ỨNG\n", "REACTIVITY\n") + LabLocalization.ChemicalData(chemical.Id, "reactivity", chemical.ReactivitySummary) + "\n\n"
+                + LabLocalization.Text("CẢNH BÁO\n", "HAZARDS\n") + LabLocalization.ChemicalData(chemical.Id, "hazards", chemical.Hazards) + "\n\n"
+                + LabLocalization.Text("THAO TÁC\n", "HANDLING\n") + LabLocalization.ChemicalData(chemical.Id, "handling", chemical.Handling) + "\n\n"
+                + LabLocalization.Text("ỨNG DỤNG\n", "USE\n") + LabLocalization.ChemicalData(chemical.Id, "use", chemical.Use)
                 + LabLocalization.Text("\n\nKHO ĐIỀU CHẾ\n", "\n\nSYNTHESIZED INVENTORY\n")
                 + (batch == null
                     ? inventoryCount + LabLocalization.Text(
@@ -613,7 +630,7 @@ namespace ChemistryLab.Desktop
                 return;
             }
 
-            vesselTitleText.text = LabLocalization.IsEnglish
+            vesselTitleText.text = LabLocalization.UsesEnglishPresentation
                 ? LocalizeReactionStatus(outcome.Status)
                 : outcome.Title;
             if (outcome.ProductCollected)
@@ -745,9 +762,11 @@ namespace ChemistryLab.Desktop
             }
 
             builder.Append(LabLocalization.Text("\n\nAN TOÀN / XỬ LÝ\n", "\n\nSAFETY / HANDLING\n"));
-            builder.Append(LabLocalization.IsEnglish
-                ? "Follow the PPE, ventilation and isolation warnings shown by the safety system."
-                : outcome.Safety);
+            builder.Append(LabLocalization.IsChinese
+                ? "请遵循安全系统显示的个人防护、通风和隔离要求。"
+                : LabLocalization.IsEnglish
+                    ? "Follow the PPE, ventilation and isolation warnings shown by the safety system."
+                    : outcome.Safety);
             vesselDetailsText.text = builder.ToString();
         }
 
@@ -923,7 +942,7 @@ namespace ChemistryLab.Desktop
                 "Freely explore chemicals, reaction conditions and laboratory safety.\n\n"
                 + "STARTER MISSION\n"
                 + "Take CuSO₄·5H₂O and NaOH, stage each sample on the vessel tray, then load them to form blue Cu(OH)₂.");
-            SetNamedText("Settings Title", "CÀI ĐẶT", "SETTINGS");
+            SetNamedText("Settings Title", "CÀI ĐẶT", LabLocalization.Text("CÀI ĐẶT", "SETTINGS", "设置"));
             SetNamedText(
                 "Settings Copy",
                 "Các thay đổi được lưu tự động cho lần chạy tiếp theo.",
@@ -984,11 +1003,11 @@ namespace ChemistryLab.Desktop
 
             if (languageButtonText != null)
             {
-                languageButtonText.text = touchControlsEnabled
-                    ? "ENGLISH  ⇄  TIẾNG VIỆT"
+                languageButtonText.text = LabLocalization.IsChinese
+                    ? "语言 · 简体中文 → ENGLISH"
                     : LabLocalization.IsEnglish
-                        ? "LANGUAGE · ENGLISH"
-                        : "NGÔN NGỮ · TIẾNG VIỆT";
+                        ? "LANGUAGE · ENGLISH → TIẾNG VIỆT"
+                        : "NGÔN NGỮ · TIẾNG VIỆT → 中文";
             }
         }
 
@@ -1063,7 +1082,10 @@ namespace ChemistryLab.Desktop
                 StopCoroutine(transientAnimation);
             }
 
-            transientText.text = MobileizeInstructionText(message);
+            transientText.text = MobileizeInstructionText(
+                LabLocalization.IsChinese
+                    ? LabLocalization.TranslateVietnameseRuntime(message)
+                    : message);
             transientText.color = warning ? LabTheme.UiHazard : LabTheme.UiText;
             transientText.transform.parent.gameObject.SetActive(true);
             transientAnimation = StartCoroutine(HideTransientLater());
@@ -2398,7 +2420,7 @@ namespace ChemistryLab.Desktop
 
         private static string LocalizeCondition(ReactionOutcome outcome)
         {
-            if (outcome == null || !LabLocalization.IsEnglish)
+            if (outcome == null || !LabLocalization.UsesEnglishPresentation)
             {
                 return outcome == null ? "—" : outcome.ConditionSummary;
             }
@@ -2412,14 +2434,14 @@ namespace ChemistryLab.Desktop
 
         private static string LocalizeCatalyst(string summary)
         {
-            if (!LabLocalization.IsEnglish)
+            if (!LabLocalization.UsesEnglishPresentation)
             {
                 return summary;
             }
 
             if (string.IsNullOrWhiteSpace(summary))
             {
-                return "No catalyst required";
+                return LabLocalization.IsChinese ? "无需催化剂" : "No catalyst required";
             }
 
             if (summary.IndexOf("Không yêu cầu", System.StringComparison.OrdinalIgnoreCase) >= 0)
@@ -2427,12 +2449,14 @@ namespace ChemistryLab.Desktop
                 return "No catalyst required";
             }
 
-            return "Reaction profile: " + summary;
+            return LabLocalization.IsChinese
+                ? "反应条件： " + LabLocalization.TranslateVietnameseRuntime(summary)
+                : "Reaction profile: " + summary;
         }
 
         private static string LocalizeObservation(ReactionOutcome outcome)
         {
-            if (outcome == null || !LabLocalization.IsEnglish)
+            if (outcome == null || !LabLocalization.UsesEnglishPresentation)
             {
                 return outcome == null ? "—" : outcome.Message;
             }
@@ -2471,11 +2495,11 @@ namespace ChemistryLab.Desktop
         {
             switch (status)
             {
-                case ReactionStatus.Reaction: return "REACTION";
-                case ReactionStatus.Blocked: return "REACTION BLOCKED";
-                case ReactionStatus.Waiting: return "WAITING FOR REAGENT";
-                case ReactionStatus.NoMatch: return "NO PREDICTED REACTION";
-                default: return "CLEAN VESSEL";
+                case ReactionStatus.Reaction: return LabLocalization.Text("PHẢN ỨNG", "REACTION");
+                case ReactionStatus.Blocked: return LabLocalization.Text("PHẢN ỨNG BỊ KHÓA", "REACTION BLOCKED");
+                case ReactionStatus.Waiting: return LabLocalization.Text("CHỜ THUỐC THỬ", "WAITING FOR REAGENT");
+                case ReactionStatus.NoMatch: return LabLocalization.Text("KHÔNG DỰ ĐOÁN PHẢN ỨNG", "NO PREDICTED REACTION");
+                default: return LabLocalization.Text("BÌNH SẠCH", "CLEAN VESSEL");
             }
         }
 

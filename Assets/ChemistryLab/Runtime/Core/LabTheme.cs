@@ -89,21 +89,21 @@ namespace ChemistryLab.Desktop
         public static Font CreateBodyFont(int size = 16)
         {
             return CreateFont(
-                new[] { "Segoe UI Variable Text", "Segoe UI", "Arial" },
+                new[] { "Noto Sans CJK SC", "Noto Sans SC", "Droid Sans Fallback", "Noto Sans", "Segoe UI Variable Text", "Segoe UI", "Arial" },
                 size);
         }
 
         public static Font CreateDisplayFont(int size = 20)
         {
             return CreateFont(
-                new[] { "Bahnschrift", "Aptos Display", "Segoe UI Semibold", "Arial" },
+                new[] { "Noto Sans CJK SC", "Noto Sans SC", "Droid Sans Fallback", "Noto Sans", "Bahnschrift", "Aptos Display", "Segoe UI Semibold", "Arial" },
                 size);
         }
 
         public static Font CreateMonoFont(int size = 14)
         {
             return CreateFont(
-                new[] { "Cascadia Mono", "JetBrains Mono", "Consolas", "Courier New" },
+                new[] { "Noto Sans Mono CJK SC", "Noto Sans CJK SC", "Droid Sans Fallback", "Cascadia Mono", "JetBrains Mono", "Consolas", "Courier New" },
                 size);
         }
 

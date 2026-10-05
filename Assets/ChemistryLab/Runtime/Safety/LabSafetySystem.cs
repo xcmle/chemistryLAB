@@ -261,27 +261,39 @@ namespace ChemistryLab.Desktop
             {
                 if (Credits < RespiratorPrice)
                 {
-                    return "Không đủ tín dụng để mua mặt nạ lọc độc.";
+                    return LabLocalization.Text(
+                        "Không đủ tín dụng để mua mặt nạ lọc độc.",
+                        "Not enough credits to buy a respirator.",
+                        "积分不足，无法购买防毒面罩。");
                 }
 
                 Credits -= RespiratorPrice;
                 RespiratorOwned = true;
                 RespiratorEquipped = true;
-                return "Đã mua và đeo mặt nạ lọc độc. Bộ lọc không thay thế tủ hút.";
+                return LabLocalization.Text(
+                    "Đã mua và đeo mặt nạ lọc độc. Bộ lọc không thay thế tủ hút.",
+                    "Respirator purchased and worn. It does not replace the fume hood.",
+                    "已购买并佩戴防毒面罩。它不能替代通风橱。");
             }
 
             RespiratorEquipped = !RespiratorEquipped;
             return RespiratorEquipped
-                ? "Đã đeo mặt nạ lọc độc."
-                : "Đã tháo mặt nạ lọc độc.";
+                ? LabLocalization.Text("Đã đeo mặt nạ lọc độc.", "Respirator equipped.", "已佩戴防毒面罩。")
+                : LabLocalization.Text("Đã tháo mặt nạ lọc độc.", "Respirator removed.", "已摘下防毒面罩。");
         }
 
         public string ToggleGasTrap()
         {
             GasTrapConnected = !GasTrapConnected;
             return GasTrapConnected
-                ? "Đã nối bình cách ly khí vào cốc trong tủ hút."
-                : "Đã tháo bình cách ly khí.";
+                ? LabLocalization.Text(
+                    "Đã nối bình cách ly khí vào cốc trong tủ hút.",
+                    "Gas trap connected in the fume hood.",
+                    "已连接通风橱气体捕集装置。")
+                : LabLocalization.Text(
+                    "Đã tháo bình cách ly khí.",
+                    "Gas trap disconnected.",
+                    "已断开气体捕集装置。");
         }
 
         public bool ToggleFumeHoodFan()
