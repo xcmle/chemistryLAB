@@ -889,7 +889,12 @@ namespace ChemistryLab.Desktop
             var touchMove = moveTouchZone != null ? moveTouchZone.InputVector : Vector2.zero;
             var combined = new Vector2(horizontal + touchMove.x, vertical + touchMove.y);
             var input = Vector2.ClampMagnitude(combined, 1f);
-            running = (Input.GetKey(KeyCode.LeftShift) || sprintRequested) && input.sqrMagnitude > 0.01f;
+            var mobileAutoSprint = game != null
+                && game.Hud != null
+                && game.Hud.TouchControlsEnabled
+                && touchMove.sqrMagnitude >= 0.72f;
+            running = (Input.GetKey(KeyCode.LeftShift) || sprintRequested || mobileAutoSprint)
+                && input.sqrMagnitude > 0.01f;
             var speed = running ? RunSpeed : WalkSpeed;
             var planar = (transform.right * input.x + transform.forward * input.y) * speed;
 

@@ -11,11 +11,20 @@ namespace ChemistryLab.Desktop
     public static class LabLocalization
     {
         private const string LanguagePreferenceKey = "chemistryLab.desktop.language";
+        private const string MobileEnglishMigrationKey = "chemistryLab.mobile.englishMigration.v2";
 
         public static LabLanguage Current
         {
             get
             {
+                if (Application.isMobilePlatform
+                    && PlayerPrefs.GetInt(MobileEnglishMigrationKey, 0) == 0)
+                {
+                    PlayerPrefs.SetInt(LanguagePreferenceKey, (int)LabLanguage.English);
+                    PlayerPrefs.SetInt(MobileEnglishMigrationKey, 1);
+                    PlayerPrefs.Save();
+                }
+
                 var defaultLanguage = Application.isMobilePlatform
                     ? LabLanguage.English
                     : LabLanguage.Vietnamese;
