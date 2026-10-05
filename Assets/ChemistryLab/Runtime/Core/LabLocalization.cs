@@ -16,9 +16,12 @@ namespace ChemistryLab.Desktop
         {
             get
             {
+                var defaultLanguage = Application.isMobilePlatform
+                    ? LabLanguage.English
+                    : LabLanguage.Vietnamese;
                 return PlayerPrefs.GetInt(
                     LanguagePreferenceKey,
-                    (int)LabLanguage.Vietnamese) == (int)LabLanguage.English
+                    (int)defaultLanguage) == (int)LabLanguage.English
                     ? LabLanguage.English
                     : LabLanguage.Vietnamese;
             }

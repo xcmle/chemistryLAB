@@ -877,7 +877,10 @@ namespace ChemistryLab.Desktop
                 || quickSelectionText.text.Contains("SELECT SAMPLE")))
                 quickSelectionText.text = LabLocalization.Text("1–9  CHỌN MẪU", "1–9  SELECT SAMPLE");
             RefreshMissionBoard();
-            SetButtonLabel("Help Button", "HƯỚNG DẪN · ESC", "GUIDE · ESC");
+            SetButtonLabel(
+                "Help Button",
+                touchControlsEnabled ? "HƯỚNG DẪN" : "HƯỚNG DẪN · ESC",
+                touchControlsEnabled ? "GUIDE" : "GUIDE · ESC");
             SetButtonLabel("Resume Button", "BẮT ĐẦU / TIẾP TỤC THỰC HÀNH", "START / RESUME PRACTICAL");
             SetButtonLabel("Settings Button", "CÀI ĐẶT", "SETTINGS");
             SetButtonLabel("Back To Main Menu Button", "VỀ MÀN HÌNH CHÍNH", "BACK TO MAIN MENU");
@@ -886,19 +889,19 @@ namespace ChemistryLab.Desktop
             SetButtonLabel("Main Menu Quit Button", "THOÁT RA DESKTOP", "QUIT TO DESKTOP");
             SetButtonLabel("Settings Back Button", "QUAY LẠI", "BACK");
             SetButtonLabel("Reaction Skip Button", "BỎ QUA", "SKIP");
-            SetButtonLabel("Touch Interact Button", "E · TƯƠNG TÁC", "E · INTERACT");
-            SetButtonLabel("Touch Inspect Button", "V · PHÂN TÍCH", "V · INSPECT");
-            SetButtonLabel("Touch Put Away Button", "BS · CẤT MẪU", "BS · PUT AWAY");
-            SetNamedText("Inspector Title", "BẢNG PHÂN TÍCH · V ĐỂ ĐÓNG", "ANALYSIS · V TO CLOSE");
-            SetButtonLabel("Touch Pause Button", "ESC · DỪNG", "ESC · PAUSE");
-            SetButtonLabel("Touch Amount Minus Button", "[ -1g", "[ -1g");
-            SetButtonLabel("Touch Amount Plus Button", "] +1g", "] +1g");
+            SetButtonLabel("Touch Interact Button", LabLocalization.Text("TƯƠNG TÁC", "INTERACT"), "E · INTERACT");
+            SetButtonLabel("Touch Inspect Button", LabLocalization.Text("PHÂN TÍCH", "INSPECT"), "V · INSPECT");
+            SetButtonLabel("Touch Put Away Button", LabLocalization.Text("CẤT MẪU", "PUT AWAY"), "BS · PUT AWAY");
+            SetNamedText("Inspector Title", "BẢNG PHÂN TÍCH", "ANALYSIS");
+            SetButtonLabel("Touch Pause Button", LabLocalization.Text("DỪNG", "PAUSE"), "ESC · PAUSE");
+            SetButtonLabel("Touch Amount Minus Button", "-1g", "-1g");
+            SetButtonLabel("Touch Amount Plus Button", "+1g", "+1g");
             SetButtonLabel("Touch Heat Button", "NHIỆT +", "HEAT +");
             SetButtonLabel("Touch Cool Button", "NHIỆT -", "COOL -");
-            SetButtonLabel("Touch Dilute Button", "F8 · LOÃNG", "F8 · DILUTE");
-            SetButtonLabel("Touch Collect Button", "C · THU HỒI", "C · COLLECT");
-            SetButtonLabel("Touch Inventory Button", "I · KHO", "I · INVENTORY");
-            SetButtonLabel("Inspector Close Button", "ĐÓNG · V", "CLOSE · V");
+            SetButtonLabel("Touch Dilute Button", LabLocalization.Text("LOÃNG", "DILUTE"), "F8 · DILUTE");
+            SetButtonLabel("Touch Collect Button", LabLocalization.Text("THU HỒI", "COLLECT"), "C · COLLECT");
+            SetButtonLabel("Touch Inventory Button", LabLocalization.Text("KHO", "INVENTORY"), "I · INVENTORY");
+            SetButtonLabel("Inspector Close Button", "ĐÓNG", "CLOSE");
             SetButtonLabel("Inspector Heat Button", "+25°C", "+25°C");
             SetButtonLabel("Inspector Cool Button", "-25°C", "-25°C");
             SetButtonLabel("Inspector Dilute Button", "LOÃNG", "DILUTE");
@@ -1274,6 +1277,11 @@ namespace ChemistryLab.Desktop
 
         private void CreateFooter(Transform parent)
         {
+            if (touchControlsEnabled)
+            {
+                return;
+            }
+
             var footer = CreatePanel(
                 "Context Controls",
                 parent,
